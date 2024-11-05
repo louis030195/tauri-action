@@ -63,9 +63,12 @@ export async function buildProject(
     rpmRelease: info.rpmRelease,
   };
 
-  await runner.execTauriCommand(['build'], [...tauriArgs], root, {
-    CI: 'false',
-  });
+  await runner.execTauriCommand(
+    ['build'],
+    [...tauriArgs],
+    root,
+    targetInfo.platform === 'macos' ? { CI: 'false' } : undefined,
+  );
 
   // on Linux, the app product name is converted to kebab-case and `()[]{}` will be removed
   // with tauri-cli 2.0.0-beta.19 deb and appimage will now use the product name as on the other platforms.
