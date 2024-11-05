@@ -269,13 +269,14 @@ export function execCommand(
   command: string,
   args: string[],
   { cwd }: { cwd?: string } = {},
+  env: Record<string, string> = {},
 ): Promise<void> {
   console.log(`running ${command}`, args);
 
   return execa(command, args, {
     cwd,
     stdio: 'inherit',
-    env: { FORCE_COLOR: '0' },
+    env: { FORCE_COLOR: '0', ...env },
   }).then();
 }
 

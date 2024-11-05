@@ -23,6 +23,7 @@ class Runner {
     command: string[],
     commandOptions: string[],
     cwd?: string,
+    env?: Record<string, string>,
   ): Promise<void> {
     const args: string[] = [];
 
@@ -40,7 +41,7 @@ class Runner {
 
     args.push(...commandOptions);
 
-    return execCommand(this.bin, args, { cwd });
+    return execCommand(this.bin, args, { cwd }, env);
   }
 }
 
