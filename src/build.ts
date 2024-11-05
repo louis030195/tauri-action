@@ -67,7 +67,7 @@ export async function buildProject(
     ['build'],
     [...tauriArgs],
     root,
-    targetInfo.platform === 'macos' ? { CI: 'true' } : undefined,
+    targetInfo.platform === 'macos' ? { CIx: 'false' } : undefined,
   );
 
   // on Linux, the app product name is converted to kebab-case and `()[]{}` will be removed
