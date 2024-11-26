@@ -175,6 +175,7 @@ jobs:
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           args: ${{ matrix.args }}
+          updaterJsonKeepUniversal: true
 
       - name: Frontend-only Project
         uses: ./
