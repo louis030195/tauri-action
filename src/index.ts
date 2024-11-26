@@ -29,6 +29,7 @@ async function run(): Promise<void> {
     const updaterJsonKeepUniversal = core.getBooleanInput(
       'updaterJsonKeepUniversal',
     );
+    const retryAttempts = parseInt(core.getInput('retryAttempts') || '3', 10);
     const tauriScript = core.getInput('tauriScript');
     const args = stringArgv(core.getInput('args'));
     const bundleIdentifier = core.getInput('bundleIdentifier');
@@ -84,14 +85,34 @@ async function run(): Promise<void> {
 
     const releaseArtifacts: Artifact[] = [];
     const debugArtifacts: Artifact[] = [];
+
+    const retry = async (fn: () => Promise<Artifact[]>, attempts: number) => {
+      for (let attempt = 1; attempt <= attempts; attempt++) {
+        try {
+          return await fn();
+        } catch (error) {
+          if (attempt === attempts) throw error;
+          console.log(`Attempt ${attempt} failed, retrying...`);
+        }
+      }
+    };
+
     if (includeRelease) {
       releaseArtifacts.push(
-        ...(await buildProject(projectPath, false, buildOptions, initOptions)),
+        ...(await retry(
+          () =>
+            buildProject(projectPath, false, buildOptions, initOptions),
+          retryAttempts,
+        )),
       );
     }
     if (includeDebug) {
       debugArtifacts.push(
-        ...(await buildProject(projectPath, true, buildOptions, initOptions)),
+        ...(await retry(
+          () =>
+            buildProject(projectPath, true, buildOptions, initOptions),
+          retryAttempts,
+        )),
       );
     }
     const artifacts = releaseArtifacts.concat(debugArtifacts);
@@ -117,7 +138,7 @@ async function run(): Promise<void> {
     const info = getInfo(projectPath, targetInfo, configArg);
     core.setOutput('appVersion', info.version);
 
-    // Other steps may benfit from this so we do this whether or not we want to upload it.
+    // Other steps may benefit from this so we do this whether or not we want to upload it.
     if (targetInfo.platform === 'macos') {
       let i = 0;
       for (const artifact of artifacts) {
