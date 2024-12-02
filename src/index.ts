@@ -86,7 +86,7 @@ async function run(): Promise<void> {
     const releaseArtifacts: Artifact[] = [];
     const debugArtifacts: Artifact[] = [];
 
-    const retry = async (fn: () => Promise<Artifact[]>, attempts: number) => {
+    const retry = async (fn: () => Promise<Artifact[]>, attempts: number): Promise<Artifact[]> => {
       for (let attempt = 1; attempt <= attempts; attempt++) {
         try {
           return await fn();
@@ -95,6 +95,7 @@ async function run(): Promise<void> {
           console.log(`Attempt ${attempt} failed, retrying...`);
         }
       }
+      return [];
     };
 
     if (includeRelease) {
