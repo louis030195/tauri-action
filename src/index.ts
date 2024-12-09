@@ -29,7 +29,7 @@ async function run(): Promise<void> {
     const updaterJsonKeepUniversal = core.getBooleanInput(
       'updaterJsonKeepUniversal',
     );
-    const retryAttempts = parseInt(core.getInput('retryAttempts') || '3', 10);
+    const retryAttempts = parseInt(core.getInput('retryAttempts') || '1', 10);
     const tauriScript = core.getInput('tauriScript');
     const args = stringArgv(core.getInput('args'));
     const bundleIdentifier = core.getInput('bundleIdentifier');
