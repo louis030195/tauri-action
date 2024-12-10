@@ -29,7 +29,7 @@ async function run(): Promise<void> {
     const updaterJsonKeepUniversal = core.getBooleanInput(
       'updaterJsonKeepUniversal',
     );
-    const retryAttempts = parseInt(core.getInput('retryAttempts') || '1', 10);
+    const retryAttempts = parseInt(core.getInput('retryAttempts') || '0', 10);
     const tauriScript = core.getInput('tauriScript');
     const args = stringArgv(core.getInput('args'));
     const bundleIdentifier = core.getInput('bundleIdentifier');
@@ -86,8 +86,11 @@ async function run(): Promise<void> {
     const releaseArtifacts: Artifact[] = [];
     const debugArtifacts: Artifact[] = [];
 
-    const retry = async (fn: () => Promise<Artifact[]>, attempts: number): Promise<Artifact[]> => {
-      for (let attempt = 1; attempt <= attempts; attempt++) {
+    const retry = async (
+      fn: () => Promise<Artifact[]>,
+      attempts: number,
+    ): Promise<Artifact[]> => {
+      for (let attempt = 0; attempt <= attempts; attempt++) {
         try {
           return await fn();
         } catch (error) {
@@ -101,8 +104,7 @@ async function run(): Promise<void> {
     if (includeRelease) {
       releaseArtifacts.push(
         ...(await retry(
-          () =>
-            buildProject(projectPath, false, buildOptions, initOptions),
+          () => buildProject(projectPath, false, buildOptions, initOptions),
           retryAttempts,
         )),
       );
@@ -110,8 +112,7 @@ async function run(): Promise<void> {
     if (includeDebug) {
       debugArtifacts.push(
         ...(await retry(
-          () =>
-            buildProject(projectPath, true, buildOptions, initOptions),
+          () => buildProject(projectPath, true, buildOptions, initOptions),
           retryAttempts,
         )),
       );
