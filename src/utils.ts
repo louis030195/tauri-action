@@ -275,8 +275,7 @@ export function execCommand(
 
   return execa(command, args, {
     cwd,
-    stdio: 'inherit',
-    reject: false,
+    stdio: 'pipe',
     env: { FORCE_COLOR: '0', ...env },
   }).then();
 }
