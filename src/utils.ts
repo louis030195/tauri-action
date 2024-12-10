@@ -2,8 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import path, { join, normalize, resolve, sep } from 'node:path';
 
 import { parse as parseToml } from '@iarna/toml';
-//import spawn from 'cross-spawn';
-import { spawn } from 'node:child_process';
+import { execa } from 'execa';
 import { globbySync } from 'globby';
 
 import { TauriConfig } from './config';
@@ -274,9 +273,11 @@ export async function execCommand(
 ): Promise<void> {
   console.log(`running ${command}`, args);
 
-  const child = spawn(command, args, {
+  const child = execa(command, args, {
     cwd,
     env: { FORCE_COLOR: '0', ...env },
+    lines: true,
+    stdio: 'pipe',
   });
 
   child.stdout?.on('data', (data) => {
@@ -293,7 +294,6 @@ export async function execCommand(
     child.on('exit', (code) => {
       if (code && code > 0) {
         reject(new Error(`Command failed with exit code ${code}`));
-        /* throw Error(); */
       } else {
         resolve();
       }
