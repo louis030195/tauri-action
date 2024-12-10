@@ -294,11 +294,11 @@ export async function execCommand(
   return new Promise((resolve, reject) => {
     child.on('exit', (code) => {
       if (code && code > 0) {
-        reject(
+        /* reject(
           new Error(
             `Command "${command} ${JSON.stringify(args)}" failed with exit code ${code}`,
           ),
-        );
+        ); */
       } else {
         resolve();
       }
