@@ -107,11 +107,11 @@ jobs:
       matrix:
         include:
           - platform: 'macos-latest'
-            args: '--verbose --target universal-apple-darwin'
+            args: '-vvv --target universal-apple-darwin'
           - platform: 'ubuntu-22.04'
-            args: '--verbose'
+            args: '-vvv'
           - platform: 'windows-latest'
-            args: '--verbose'
+            args: '-vvv'
 
     runs-on: ${{ matrix.platform }}
     steps:
