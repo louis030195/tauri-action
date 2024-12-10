@@ -288,6 +288,8 @@ export async function execCommand(
     process.stderr.write(data);
   });
 
+  child.on('error', (err) => process.stderr.write(err.toString()));
+
   return new Promise((resolve, reject) => {
     child.on('exit', (code) => {
       if (code && code > 0) {
