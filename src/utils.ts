@@ -14,6 +14,7 @@ import type {
   TargetInfo,
   TargetPlatform,
 } from './types';
+import { ChildProcess } from 'node:child_process';
 
 /*** constants ***/
 export const extensions = [
@@ -273,22 +274,29 @@ export async function execCommand(
 ): Promise<void> {
   console.log(`running ${command}`, args);
 
-  const child = execa(command, args, {
-    cwd,
-    env: { FORCE_COLOR: '0', ...env },
-    lines: true,
-    stdio: 'pipe',
-    reject: false,
-  });
+  let child: ChildProcess;
+
+  try {
+    child = execa(command, args, {
+      cwd,
+      env: { FORCE_COLOR: '0', ...env },
+      lines: true,
+      stdio: 'pipe',
+      reject: false,
+    });
+  } catch (err) {
+    console.log(err);
+    return;
+  }
 
   child.stdout?.on('data', (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    console.log(data);
+    //console.log(data);
   });
 
   child.stderr?.on('data', (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    console.log(data);
+    //console.log(data);
   });
 
   return new Promise((resolve, reject) => {
