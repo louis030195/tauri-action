@@ -173,7 +173,7 @@ jobs:
           releaseDraft: true
           args: ${{ matrix.args }}
           updaterJsonKeepUniversal: true
-          retryAttemps: 1
+          retryAttempts: 2
 
       - name: Frontend-only Project
         uses: ./
@@ -195,3 +195,4 @@ jobs:
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           args: ${{ matrix.args }}
+          retryAttempts:

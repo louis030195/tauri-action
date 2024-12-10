@@ -291,22 +291,22 @@ export async function execCommand(
 
   child.stdout?.on('data', (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    //console.log(data);
+    process.stdout.write(data);
   });
 
   child.stderr?.on('data', (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    //console.log(data);
+    process.stderr.write(data);
   });
 
   return new Promise((resolve, reject) => {
     child.on('exit', (code) => {
       if (code && code > 0) {
-        /* reject(
+        reject(
           new Error(
             `Command "${command} ${JSON.stringify(args)}" failed with exit code ${code}`,
           ),
-        ); */
+        );
       } else {
         resolve();
       }
