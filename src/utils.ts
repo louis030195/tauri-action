@@ -278,6 +278,7 @@ export async function execCommand(
     env: { FORCE_COLOR: '0', ...env },
     lines: true,
     stdio: 'pipe',
+    reject: false,
   });
 
   child.stdout?.on('data', (data) => {
@@ -287,7 +288,7 @@ export async function execCommand(
 
   child.stderr?.on('data', (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    //process.stderr.write(data);
+    process.stderr.write(data);
   });
 
   return new Promise((resolve, reject) => {
