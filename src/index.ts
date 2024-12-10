@@ -86,33 +86,24 @@ async function run(): Promise<void> {
     const releaseArtifacts: Artifact[] = [];
     const debugArtifacts: Artifact[] = [];
 
-    const retry = async (
-      fn: () => Promise<Artifact[]>,
-      attempts: number,
-    ): Promise<Artifact[]> => {
-      for (let attempt = 0; attempt <= attempts; attempt++) {
-        try {
-          return await fn();
-        } catch (error) {
-          if (attempt === attempts) throw error;
-          console.log(`Attempt ${attempt} failed, retrying...`);
-        }
-      }
-      return [];
-    };
-
     if (includeRelease) {
       releaseArtifacts.push(
-        ...(await retry(
-          () => buildProject(projectPath, false, buildOptions, initOptions),
+        ...(await buildProject(
+          projectPath,
+          false,
+          buildOptions,
+          initOptions,
           retryAttempts,
         )),
       );
     }
     if (includeDebug) {
       debugArtifacts.push(
-        ...(await retry(
-          () => buildProject(projectPath, true, buildOptions, initOptions),
+        ...(await buildProject(
+          projectPath,
+          true,
+          buildOptions,
+          initOptions,
           retryAttempts,
         )),
       );
