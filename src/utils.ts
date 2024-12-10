@@ -283,12 +283,12 @@ export async function execCommand(
 
   child.stdout?.on('data', (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    process.stdout.write(data);
+    console.log(data);
   });
 
   child.stderr?.on('data', (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    process.stderr.write(data);
+    console.log(data);
   });
 
   return new Promise((resolve, reject) => {
