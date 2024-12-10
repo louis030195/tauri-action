@@ -2,7 +2,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import path, { join, normalize, resolve, sep } from 'node:path';
 
 import { parse as parseToml } from '@iarna/toml';
-import spawn from 'cross-spawn';
+//import spawn from 'cross-spawn';
+import { spawn } from 'node:child_process';
 import { globbySync } from 'globby';
 
 import { TauriConfig } from './config';
@@ -287,8 +288,6 @@ export async function execCommand(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     process.stderr.write(data);
   });
-
-  child.on('error', (err) => process.stderr.write(err.toString()));
 
   return new Promise((resolve, reject) => {
     child.on('exit', (code) => {
