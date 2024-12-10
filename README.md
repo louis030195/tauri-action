@@ -108,7 +108,7 @@ These inputs allow you to change how your Tauri project will be build.
 | `updaterJsonKeepUniversal` |  false   | whether the updater JSON file should include universal macOS builds as darwin-universal on top of using it in the aarch64 and x86_64 fields.                       | bool   | false                                                                          |
 | `tauriScript`              |  false   | the script to execute the Tauri CLI. It must not include any args or commands like `build`                                                                         | string | `npm run\|pnpm\|yarn tauri`                                                    |
 | `args`                     |  false   | Additional arguments to the current build command                                                                                                                  | string |                                                                                |
-| `retryAttempts`            |  false   | The number of times to re-try building the app if the initial build fails. For now this only affects `tauri build` but may include the upload steps in the future. | number | `0`                                                                            |
+| `retryAttempts`            |  false   | The number of times to re-try building the app if the initial build fails. For now this only affects `tauri build` but may include the upload steps in the future. | number | 0                                                                              |
 
 ### Release Configuration
 
